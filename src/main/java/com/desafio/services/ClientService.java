@@ -3,6 +3,7 @@ package com.desafio.services;
 import com.desafio.dto.ClientDTO;
 import com.desafio.entities.Client;
 import com.desafio.repositories.ClientRepository;
+import com.desafio.services.exceptions.ClientNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,13 @@ public class ClientService {
 
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id){
-        Optional<Client> result = repository.findById(id);
-        Client client = result.get();
+        Client client = repository.findById(id)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente não existe!"));
         ClientDTO dto = modelMapper.map(client, ClientDTO.class);
         return dto;
     }
+
+
+
 
 }

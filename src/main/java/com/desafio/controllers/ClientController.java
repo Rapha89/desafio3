@@ -15,6 +15,7 @@ public class ClientController {
 
     @Autowired
     private ClientService service;
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> findById(@PathVariable Long id){
         ClientDTO dto = service.findById(id);
