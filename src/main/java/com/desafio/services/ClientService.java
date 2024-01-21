@@ -32,4 +32,10 @@ public class ClientService {
         Page<Client> result = repository.findAll(pageable);
         return result.map(x -> modelMapper.map(x, ClientDTO.class));
     }
+
+    public ClientDTO insert(ClientDTO dto) {
+        Client client = modelMapper.map(dto, Client.class);
+        client = repository.save(client);
+        return modelMapper.map(client, ClientDTO.class);
+    }
 }
