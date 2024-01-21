@@ -4,6 +4,7 @@ import com.desafio.dto.ClientDTO;
 import com.desafio.entities.Client;
 import com.desafio.repositories.ClientRepository;
 import com.desafio.services.exceptions.ClientNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,5 +38,25 @@ public class ClientService {
         Client client = modelMapper.map(dto, Client.class);
         client = repository.save(client);
         return modelMapper.map(client, ClientDTO.class);
+    }
+    @Transactional
+    public ClientDTO update(Long id, ClientDTO dto) {
+        try{
+            Client client = repository.getReferenceById(id);
+            copyDtoToEntity(dto, client);
+            client = repository.save(client);
+            return modelMapper.map(client, ClientDTO.class);
+        }
+        catch (EntityNotFoundException e){
+            throw new ClientNotFoundException("Cliente não encontrado!");
+        }
+    }
+
+    private void copyDtoToEntity(ClientDTO dto, Client entity) {
+        entity.setName(dto.getName());
+        entity.setCpf(dto.getCpf());
+        entity.setIncome(dto.getIncome());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setChildren(dto.getChildren());
     }
 }
