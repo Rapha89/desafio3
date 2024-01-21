@@ -1,13 +1,18 @@
 package com.desafio.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.time.LocalDate;
 
 public class ClientDTO {
 
     public Long id;
+    @NotBlank(message = "O campo nome não pode estar vazio!")
     public String name;
     public String cpf;
     public Double income;
+    @PastOrPresent(message = "A data de nascimento deve ser uma data passada!")
     public LocalDate birthDate;
     public Integer children;
 
